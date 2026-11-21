@@ -127,6 +127,9 @@ pub struct Query {
     /// Keeps the notes written about the item with this id.
     pub about: Option<i64>,
     pub limit: Option<u32>,
+    /// Keeps only the items with these ids; empty means every item. Never set by the interface.
+    #[serde(skip)]
+    pub ids: Vec<i64>,
 }
 
 /// How the interface writes a date and time: local, to the minute.
@@ -177,9 +180,14 @@ pub fn now() -> i64 {
 }
 
 /// Makes the stored items of `source` match `items`: adds, updates, and removes what is gone.
-/// The user's triage of an item that is still there is kept.
-pub fn replace_source(conn: &mut Connection, source: &str, items: &[NewItem]) -> Result<()> {
+/// The user's triage of an item that is still there is kept. Returns the ids of the items
+/// that were not there before.
+pub fn replace_source(conn: &mut Connection, source: &str, items: &[NewItem]) -> Result<Vec<i64>> {
     let tx = conn.transaction()?;
+    // A new row always gets an id above every id in use.
+    let highest: i64 = tx.query_row("SELECT COALESCE(MAX(id), 0) FROM items", [], |row| {
+        row.get(0)
+    })?;
     let stamp: i64 = tx.query_row(
         "SELECT COALESCE(MAX(synced_at), 0) + 1 FROM items WHERE source = ?1",
         [source],
@@ -217,8 +225,12 @@ pub fn replace_source(conn: &mut Connection, source: &str, items: &[NewItem]) ->
         "DELETE FROM items WHERE source = ?1 AND synced_at <> ?2",
         params![source, stamp],
     )?;
+    let fresh = tx
+        .prepare("SELECT id FROM items WHERE source = ?1 AND id > ?2 ORDER BY id")?
+        .query_map(params![source, highest], |row| row.get(0))?
+        .collect::<rusqlite::Result<_>>()?;
     tx.commit()?;
-    Ok(())
+    Ok(fresh)
 }
 
 /// Removes the items of every source that is no longer configured.
@@ -241,6 +253,17 @@ pub fn create_local(conn: &Connection, kind: Kind, title: &str) -> Result<i64> {
         params![LOCAL_SOURCE, kind, title, now()],
     )?;
     Ok(conn.last_insert_rowid())
+}
+
+/// Turns something that arrived into a task of the user's own, which keeps its title and its
+/// page.
+pub fn create_task_from(conn: &Connection, item: &Item) -> Result<i64> {
+    let id = create_local(conn, Kind::Task, &item.title)?;
+    conn.execute(
+        "UPDATE items SET url = ?2 WHERE id = ?1",
+        params![id, item.url],
+    )?;
+    Ok(id)
 }
 
 /// Starts a note, about an item when `about` is one that exists. What the note is about is
@@ -435,6 +458,13 @@ pub fn list(conn: &Connection, query: &Query) -> Result<Vec<Item>> {
     if let Some(about) = query.about {
         filters.push("json_extract(meta, '$.about.id') = ?".into());
         values.push(about.into());
+    }
+    if !query.ids.is_empty() {
+        filters.push(format!(
+            "items.id IN ({})",
+            vec!["?"; query.ids.len()].join(", ")
+        ));
+        values.extend(query.ids.iter().map(|&id| Value::from(id)));
     }
     if !filters.is_empty() {
         sql.push_str(" WHERE ");

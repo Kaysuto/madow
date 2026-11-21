@@ -1,7 +1,6 @@
 import type { en } from './en'
 
 export const fr: typeof en = {
-  comingSoon: "Cet espace n'est pas encore construit.",
   settings: 'Réglages',
   spaces: {
     today: "Aujourd'hui",
@@ -91,6 +90,30 @@ export const fr: typeof en = {
     task: 'Nouvelle tâche',
     note: 'Nouvelle note',
     ask: "Demander à l'assistant",
+  },
+  rules: {
+    intro:
+      "Une règle agit sur ce qui arrive après son écriture : elle peut en faire une tâche, vous prévenir, ou sortir l'élément de la Boîte. Les règles n'agissent que dans Madow : elles n'envoient, ne suppriment et ne modifient rien dans vos services.",
+    none: 'Aucune règle pour le moment. Écrivez-en une ci-dessous.',
+    name: 'Nom de la règle',
+    when: 'Quand ceci arrive',
+    any: 'Tout',
+    search: 'Contenant ces mots (titre, texte ou expéditeur)',
+    then: 'Alors',
+    task: 'En faire une tâche',
+    notify: 'Me prévenir',
+    triage: { inbox: 'Laisser dans la Boîte', done: 'Marquer comme fait', later: 'Remettre à plus tard' },
+    add: 'Ajouter la règle',
+    save: 'Enregistrer la règle',
+    edit: 'Modifier',
+    cancel: 'Annuler',
+    remove: 'Retirer',
+    confirmRemove: 'Confirmer le retrait',
+    enabled: 'Règle activée',
+    ran: 'Éléments traités :',
+    never: "N'a pas encore agi",
+    preview: 'Éléments déjà présents qui correspondent :',
+    noMatch: "Rien de ce qui est déjà là ne correspond. La règle agira quand même sur ce qui arrive.",
   },
   open: 'Ouvrir',
   actions: { mark_read: 'Marquer lu', archive: 'Archiver' },

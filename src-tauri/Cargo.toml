@@ -33,6 +33,7 @@ sysinfo = { version = "0.40.4", default-features = false, features = ["system", 
 tauri = { version = "2.12.6" }
 tauri-plugin-dialog = "2.8.4"
 tauri-plugin-global-shortcut = "2.4.1"
+tauri-plugin-notification = "2.8.1"
 tauri-plugin-opener = "2.7.3"
 tauri-plugin-single-instance = "2.5.5"
 thiserror = "2.0.21"

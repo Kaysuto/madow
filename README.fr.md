@@ -18,6 +18,7 @@ Aperçu : Madow s'utilise au quotidien mais reste jeune, et des choses bougeront
 - **Bilan** : le temps de focus par projet, vos commits, et un bilan écrit du jour ou de la semaine.
 - **Assistant** : un chat qui connaît votre journée, avec son historique.
 - **Focus** : un chrono lancé depuis n'importe quel élément.
+- **Automatisations** : vos règles sur ce qui arrive (« un mail contenant facture », « une alerte ») : en faire une tâche, recevoir une notification, ou le sortir de la Boîte. Les règles n'agissent que dans Madow.
 - **Lanceur** : Ctrl+K, ou Alt+Espace depuis n'importe où sur l'ordinateur, retrouve un élément, change d'espace, ouvre un projet dans votre éditeur, note une tâche ou une idée, ou interroge l'assistant. Le raccourci global se change dans les réglages.
 - **Barre d'état** : processeur, mémoire et disque, la musique en cours avec ses boutons (Windows et Linux), les agents au travail, et les serveurs qui ne répondent plus.
 

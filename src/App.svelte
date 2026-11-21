@@ -10,6 +10,7 @@
   import { i18n, restoreLocale } from './lib/i18n.svelte'
   import { takeNote } from './lib/notes.svelte'
   import { SPACES, type Space } from './lib/spaces'
+  import Automations from './spaces/Automations.svelte'
   import Calendar from './spaces/Calendar.svelte'
   import Code from './spaces/Code.svelte'
   import Inbox from './spaces/Inbox.svelte'
@@ -127,11 +128,10 @@
       <Notes />
     {:else if view === 'review'}
       <Review onsettings={() => show('settings')} />
+    {:else if view === 'automations'}
+      <Automations />
     {:else if view === 'settings'}
       <Settings />
-    {:else}
-      <h1>{i18n.t.spaces[view]}</h1>
-      <p class="muted">{i18n.t.comingSoon}</p>
     {/if}
   </main>
 
@@ -218,14 +218,5 @@
   main {
     padding: 32px 40px;
     overflow: auto;
-  }
-  h1 {
-    margin: 0 0 8px;
-    font-size: 24px;
-    font-weight: 600;
-  }
-  .muted {
-    margin: 0;
-    color: var(--muted);
   }
 </style>
