@@ -1,9 +1,10 @@
 //! Keeps the local items in step with the configured connectors.
 
-use crate::{State, connectors, error::Result, items};
+use crate::{State, connectors, error::Result, items, rules};
 use serde::Serialize;
 use std::time::Duration;
 use tauri::{AppHandle, Emitter, Manager};
+use tauri_plugin_notification::NotificationExt;
 
 /// Sent to the interface whenever stored items may have changed.
 pub const ITEMS_CHANGED: &str = "items-changed";
@@ -23,12 +24,18 @@ pub async fn run(app: &AppHandle) -> Result<Vec<Failure>> {
     let connectors = connectors::configured(&state.db())?;
     let sources: Vec<&str> = connectors.iter().map(|c| c.source()).collect();
     items::retain_sources(&state.db(), &sources)?;
+    rules::retain_sources(&state.db(), &sources)?;
 
     let mut failures = Vec::new();
+    let mut notices = Vec::new();
     for connector in &connectors {
         // The database is never locked while a connector waits on the network.
         match connector.sync().await {
-            Ok(fetched) => items::replace_source(&mut state.db(), connector.source(), &fetched)?,
+            Ok(fetched) => {
+                let mut db = state.db();
+                let fresh = items::replace_source(&mut db, connector.source(), &fetched)?;
+                notices.extend(rules::arrived(&db, connector.source(), &fresh)?);
+            }
             Err(message) => failures.push(Failure {
                 source: connector.source().to_owned(),
                 message,
@@ -41,6 +48,18 @@ pub async fn run(app: &AppHandle) -> Result<Vec<Failure>> {
         .map(|failure| (failure.source.clone(), failure.message.clone()))
         .collect();
     app.emit(ITEMS_CHANGED, ())?;
+    for notice in notices {
+        // A system that shows no notifications is no reason to fail the sync.
+        let shown = app
+            .notification()
+            .builder()
+            .title(notice.title)
+            .body(notice.body)
+            .show();
+        if let Err(error) = shown {
+            eprintln!("notification failed: {error}");
+        }
+    }
     Ok(failures)
 }
 

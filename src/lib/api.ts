@@ -292,6 +292,36 @@ export const listSources = () => invoke<SourceView[]>('list_sources')
 export const saveSource = (source: Source, token?: string) => invoke<void>('save_source', { source, token })
 export const deleteSource = (id: string) => invoke<void>('delete_source', { id })
 
+// ---------- automations (types mirror `src-tauri/src/rules.rs`) ----------
+
+/** "When an item like this arrives, do that." A rule only acts inside Madow. */
+export interface Rule {
+  id: string
+  name: string
+  enabled: boolean
+  /** The kind of item it is about; null for every kind. */
+  kind: Kind | null
+  /** Words to find in the title, the text or the author, read like a search. May be empty. */
+  search: string
+  /** Makes a task of the item. */
+  task: boolean
+  /** Tells the user with a notification of the system. */
+  notify: boolean
+  /** Where the item goes; null leaves it where it arrived. */
+  triage: 'done' | 'later' | null
+  /** How many items it has acted on, and when it last did (Unix seconds). Kept by the core. */
+  runs: number
+  lastRun: number | null
+}
+
+/** The kinds a sync can bring in. Tasks and notes are written here: they never arrive. */
+export const RULE_KINDS: Kind[] = [...INBOX_KINDS, 'event', 'article']
+
+export const listRules = () => invoke<Rule[]>('list_rules')
+/** Adds the rule, or replaces the one with the same id. */
+export const saveRule = (rule: Rule) => invoke<void>('save_rule', { rule })
+export const deleteRule = (id: string) => invoke<void>('delete_rule', { id })
+
 // ---------- models (types mirror `src-tauri/src/llm/mod.rs`) ----------
 
 export type ProviderKind = 'anthropic' | 'openai_compat' | 'claude_code' | 'codex'

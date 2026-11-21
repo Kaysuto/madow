@@ -11,6 +11,7 @@ mod items;
 mod launcher;
 mod llm;
 mod media;
+mod rules;
 mod secrets;
 mod settings;
 mod sync;
@@ -344,6 +345,24 @@ fn save_source(
 fn delete_source(state: tauri::State<'_, State>, id: &str) -> Result<()> {
     secrets::delete(&connectors::secret_name(id))?;
     connectors::delete_source(&state.db(), id)
+}
+
+// ---------- automations ----------
+
+#[tauri::command]
+fn list_rules(state: tauri::State<'_, State>) -> Result<Vec<rules::Rule>> {
+    rules::list(&state.db())
+}
+
+/// Adds a rule, or replaces the one with the same id.
+#[tauri::command]
+fn save_rule(state: tauri::State<'_, State>, rule: rules::Rule) -> Result<()> {
+    rules::save(&state.db(), rule)
+}
+
+#[tauri::command]
+fn delete_rule(state: tauri::State<'_, State>, id: &str) -> Result<()> {
+    rules::delete(&state.db(), id)
 }
 
 // ---------- settings ----------
@@ -731,6 +750,7 @@ pub fn run() {
             launcher::bring_forward(app);
         }))
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
+        .plugin(tauri_plugin_notification::init())
         .setup(|app| {
             let dir = app.path().app_data_dir()?;
             std::fs::create_dir_all(&dir)?;
@@ -775,6 +795,9 @@ pub fn run() {
             list_sources,
             save_source,
             delete_source,
+            list_rules,
+            save_rule,
+            delete_rule,
             get_setting,
             set_setting,
             launcher_shortcut,
