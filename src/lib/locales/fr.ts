@@ -80,6 +80,9 @@ export const fr: typeof en = {
     shortcutHint:
       "Appelle Madow et son lanceur depuis n'importe où. S'écrit avec les touches en anglais, par exemple Alt+Space ou Ctrl+Shift+K. Laissez vide pour ne pas en avoir.",
     shortcutTaken: "Ce raccourci ne répond pas : une autre application le détient, ou ce système n'en propose pas.",
+    habits: 'Suggestions selon vos habitudes',
+    habitsHint:
+      "Madow note, sur cet ordinateur seulement, ce que vous marquez comme fait ou remettez à plus tard, pour suggérer des règles. Aucun modèle ne le lit. Décocher efface ces notes.",
   },
   launcher: {
     open: 'Rechercher',
@@ -114,6 +117,14 @@ export const fr: typeof en = {
     never: "N'a pas encore agi",
     preview: 'Éléments déjà présents qui correspondent :',
     noMatch: "Rien de ce qui est déjà là ne correspond. La règle agira quand même sur ce qui arrive.",
+    suggested: 'Suggéré par vos habitudes',
+    yours: 'Vos règles',
+    habit: {
+      done: 'Vous avez marqué comme fait vos {n} derniers éléments de cet expéditeur.',
+      later: 'Vous avez remis à plus tard vos {n} derniers éléments de cet expéditeur.',
+    },
+    propose: 'Préparer la règle',
+    ignore: 'Ignorer',
   },
   open: 'Ouvrir',
   actions: { mark_read: 'Marquer lu', archive: 'Archiver' },

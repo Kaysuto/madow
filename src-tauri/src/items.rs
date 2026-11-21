@@ -11,7 +11,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 pub const LOCAL_SOURCE: &str = "local";
 
 /// What an item is, whichever service it comes from.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Kind {
     Mail,

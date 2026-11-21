@@ -84,6 +84,18 @@ const MIGRATIONS: &[&str] = &[
     INSERT INTO settings (key, value) SELECT 'chat.current', id FROM conversations;
     DELETE FROM settings WHERE key = 'chat';
     ",
+    // 5: the journal of what the user does with what arrives, read to suggest rules. It keeps
+    // the kind and the author of the item, not the item: a sync may remove it.
+    "
+    CREATE TABLE usage (
+        id INTEGER PRIMARY KEY,
+        at INTEGER NOT NULL,
+        triage TEXT NOT NULL,
+        kind TEXT NOT NULL,
+        author TEXT NOT NULL
+    );
+    CREATE INDEX usage_by_time ON usage (at);
+    ",
 ];
 
 pub fn open(path: &Path) -> rusqlite::Result<Connection> {

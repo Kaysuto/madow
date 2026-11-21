@@ -78,6 +78,9 @@ export const en = {
     shortcutHint:
       'Calls Madow and its launcher from anywhere. Written with the keys in English, such as Alt+Space or Ctrl+Shift+K. Leave it empty to have none.',
     shortcutTaken: 'This shortcut does not answer: another application holds it, or this system has none.',
+    habits: 'Suggestions from your habits',
+    habitsHint:
+      'Madow notes, on this machine only, what you mark as done or set aside, to suggest rules. No model reads it. Turning this off erases those notes.',
   },
   launcher: {
     open: 'Search',
@@ -112,6 +115,14 @@ export const en = {
     never: 'Has not acted yet',
     preview: 'Items you already have that match:',
     noMatch: 'Nothing you already have matches. The rule will still act on what arrives.',
+    suggested: 'Suggested by your habits',
+    yours: 'Your rules',
+    habit: {
+      done: 'You marked your last {n} from this sender as done.',
+      later: 'You set your last {n} from this sender aside for later.',
+    },
+    propose: 'Prepare the rule',
+    ignore: 'Ignore',
   },
   open: 'Open',
   actions: { mark_read: 'Mark read', archive: 'Archive' },

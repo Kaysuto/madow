@@ -8,6 +8,7 @@
     launcherShortcut,
     setLauncherShortcut,
     setSetting,
+    setUsageJournal,
     syncNow,
   } from './lib/api'
   import { i18n } from './lib/i18n.svelte'
@@ -18,13 +19,24 @@
   let error = $state('')
   let shortcut = $state('')
   let active = $state(true)
+  let habits = $state(true)
 
   const readShortcut = async () => void ({ shortcut, active } = await launcherShortcut())
 
   onMount(async () => {
     demo = (await getSetting<boolean>('demo')) === true
+    habits = (await getSetting<boolean>('usage.off')) !== true
     await readShortcut()
   })
+
+  async function toggleHabits() {
+    try {
+      await setUsageJournal(habits)
+      error = ''
+    } catch (cause) {
+      error = String(cause)
+    }
+  }
 
   async function saveShortcut() {
     try {
@@ -78,6 +90,14 @@
   <input class="field shortcut" spellcheck="false" bind:value={shortcut} onchange={saveShortcut} />
 </label>
 
+<label class="row">
+  <span>
+    <span class="name">{i18n.t.prefs.habits}</span>
+    <span class="hint">{i18n.t.prefs.habitsHint}</span>
+  </span>
+  <input type="checkbox" bind:checked={habits} onchange={toggleHabits} />
+</label>
+
 {#if error}
   <p class="error" role="alert">{error}</p>
 {/if}
@@ -113,6 +133,7 @@
     font-size: 13px;
   }
   input[type='checkbox'] {
+    flex: none;
     width: 18px;
     height: 18px;
     accent-color: var(--accent);
