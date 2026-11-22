@@ -287,7 +287,7 @@ export const fr: typeof en = {
     confirmRemove: 'Confirmer le retrait',
     service: 'Service',
     name: 'Nom',
-    token: { github: 'Jeton (facultatif)', gitlab: "Jeton d'accès", linear: 'Clé API', jira: 'Jeton API', ical: 'Adresse iCal secrète', imap: "Mot de passe ou mot de passe d'application", feed: 'Adresse du flux (https://…)', server: '', telegram: 'Jeton du robot' },
+    token: { github: 'Jeton (facultatif)', gitlab: "Jeton d'accès", linear: 'Clé API', jira: 'Jeton API', ical: 'Adresse iCal secrète', imap: "Mot de passe ou mot de passe d'application", feed: 'Adresse du flux (https://…)', server: '', telegram: 'Jeton du robot', discord: 'Jeton du robot' },
     server: 'Serveur de messagerie (IMAP)',
     serverKind: 'Serveur à surveiller',
     instance: {
@@ -302,6 +302,8 @@ export const fr: typeof en = {
     add: 'Ajouter',
     sync: 'Synchroniser',
     hints: {
+      discord:
+        "Discord interdit de lire vos messages privés avec un autre programme : Madow lit à travers un robot. Créez une application avec un robot dans le portail des développeurs Discord, activez son « Message Content Intent », invitez-le sur vos serveurs et collez son jeton ici. Madow lit les salons que le robot peut voir : les 20 qui ont parlé en dernier depuis 24 heures, 20 messages chacun. Lecture seule.",
       telegram:
         "Telegram ne laisse aucun programme lire vos conversations privées : Madow lit à travers un robot. Créez-en un avec @BotFather, collez son jeton ici, et ajoutez le robot aux groupes et canaux à suivre. Pour voir tous les messages d'un groupe et pas seulement ceux adressés au robot, désactivez son mode de confidentialité dans BotFather. Madow affiche les messages des dernières 24 heures, 100 au plus. Utilisez un robot créé pour Madow : un autre programme lisant le même robot manquerait des messages.",
       server: "Madow vérifie toutes les quelques minutes que le port accepte les connexions, ou que l'adresse web répond. Un serveur qui ne répond plus devient une alerte dans la Boîte et dans la barre d'état, jusqu'à son retour.",

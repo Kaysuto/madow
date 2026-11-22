@@ -22,7 +22,7 @@ Early preview: Madow is usable day to day but still young, and things will move 
 - **Launcher**: Ctrl+K, or Alt+Space from anywhere on the machine, finds any item, jumps to a space, opens a project in your editor, captures a task or a note, or asks the assistant. The global shortcut is yours to change.
 - **Status bar**: processor, memory and disk, what is playing with its buttons (Windows and Linux), the agents at work, and the servers that stopped answering.
 
-Sources so far: any mailbox (IMAP/SMTP), calendars by iCal link, GitHub and GitLab, Linear and Jira, Telegram groups and channels through a bot, RSS and Atom feeds, and servers to watch. Models: Claude Code or Codex with your subscription, an API key (Anthropic or any OpenAI-compatible service), or a local model. Sample data is built in, to look around before connecting anything.
+Sources so far: any mailbox (IMAP/SMTP), calendars by iCal link, GitHub and GitLab, Linear and Jira, Telegram and Discord through a bot, RSS and Atom feeds, and servers to watch. Models: Claude Code or Codex with your subscription, an API key (Anthropic or any OpenAI-compatible service), or a local model. Sample data is built in, to look around before connecting anything.
 
 Your data stays on your machine. The model never gets a tool on it: Madow reads your sources itself and hands over text, and nothing is sent or created without your click.
 
