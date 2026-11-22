@@ -1,6 +1,6 @@
 [package]
 name = "madow"
-version = "0.4.0"
+version = "0.5.0"
 description = "The all-in-one workspace for developers, with the AI model of your choice"
 authors = ["Kaysuto"]
 license = "MIT"
