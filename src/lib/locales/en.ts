@@ -286,7 +286,7 @@ export const en = {
     confirmRemove: 'Confirm removal',
     service: 'Service',
     name: 'Name',
-    token: { github: 'Token (optional)', gitlab: 'Access token', linear: 'API key', jira: 'API token', ical: 'Secret iCal address', imap: 'Password or app password', feed: 'Feed address (https://…)', server: '' },
+    token: { github: 'Token (optional)', gitlab: 'Access token', linear: 'API key', jira: 'API token', ical: 'Secret iCal address', imap: 'Password or app password', feed: 'Feed address (https://…)', server: '', telegram: 'Bot token' },
     server: 'Mail server (IMAP)',
     serverKind: 'Server to watch',
     instance: {
@@ -301,6 +301,8 @@ export const en = {
     add: 'Add',
     sync: 'Sync now',
     hints: {
+      telegram:
+        'Telegram lets no program read your private chats: Madow reads through a bot. Create one with @BotFather, paste its token here, and add the bot to the groups and channels you want to follow. To see every message of a group and not only those addressed to the bot, turn off its privacy mode in BotFather. Madow shows the messages of the last 24 hours, 100 at most. Use a bot made for Madow: another program reading the same bot would miss messages.',
       server: 'Madow checks every few minutes that the port accepts connections, or that the web address answers. A server that stops answering becomes an alert in the inbox and in the status bar, until it is back.',
       jira: 'For Jira Cloud. Create an API token in the security settings of your Atlassian account, and give the email address of that account. Madow reads the issues assigned to you that are not done.',
       gitlab: 'Create a personal access token with the read_api scope, in your GitLab preferences. Leave the address empty for gitlab.com; for an instance of your own, give its https address.',

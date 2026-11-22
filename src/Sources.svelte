@@ -3,7 +3,7 @@
   import { type SourceKind, type SourceView, deleteSource, listSources, saveSource, syncNow } from './lib/api'
   import { i18n } from './lib/i18n.svelte'
 
-  const KINDS: SourceKind[] = ['github', 'gitlab', 'linear', 'jira', 'ical', 'imap', 'feed', 'server']
+  const KINDS: SourceKind[] = ['github', 'gitlab', 'linear', 'jira', 'ical', 'imap', 'feed', 'server', 'telegram']
   /** Servers of common mail services, offered while typing. Any other IMAP server works too. */
   const MAIL_SERVERS = ['imap.gmail.com', 'imap.mail.me.com', 'imap.fastmail.com', 'imap.mail.yahoo.com', 'imap.gmx.com']
   /** Calendars have no brand: any service gives an iCal address. */
@@ -17,6 +17,7 @@
       imap: `${i18n.t.kinds.mail} (IMAP)`,
       feed: `${i18n.t.spaces.news} (RSS, Atom)`,
       server: i18n.t.sources.serverKind,
+      telegram: 'Telegram',
     })[kind]
 
   let sources = $state<SourceView[]>([])

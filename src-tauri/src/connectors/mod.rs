@@ -11,6 +11,7 @@ mod jira;
 mod linear;
 mod server;
 mod smtp;
+mod telegram;
 
 use crate::{
     error::Result,
@@ -90,6 +91,8 @@ pub enum SourceKind {
     Feed,
     /// A server to keep an eye on. `options` say where it is; it has no secret.
     Server,
+    /// A messaging service, read through a bot of the user's own. Its token is the bot's.
+    Telegram,
 }
 
 /// A source the user has connected. Its token, if any, is in the keychain.
@@ -155,6 +158,7 @@ pub fn configured(conn: &Connection) -> Result<Vec<Box<dyn Connector>>> {
             }
             SourceKind::Ical => Box::new(ical::Ical::new(source.id, token)),
             SourceKind::Feed => Box::new(feed::Feed::new(source.id, token)),
+            SourceKind::Telegram => Box::new(telegram::Telegram::new(source.id, token)),
             SourceKind::Server => {
                 let options = serde_json::from_value(source.options).unwrap_or_default();
                 Box::new(server::Server::new(source.id, source.name, options))
@@ -193,8 +197,9 @@ fn excerpt(text: &str, limit: usize) -> String {
     text.trim().chars().take(limit).collect()
 }
 
+/// The address is left out of the message: for some sources it holds the secret.
 fn unreachable(error: reqwest::Error) -> String {
-    format!("Could not reach the service: {error}")
+    format!("Could not reach the service: {}", error.without_url())
 }
 
 #[cfg(test)]

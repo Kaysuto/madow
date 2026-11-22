@@ -270,7 +270,7 @@ export const onLauncherCalled = (handler: () => void): Promise<UnlistenFn> => li
 
 // ---------- sources (types mirror `src-tauri/src/connectors/mod.rs`) ----------
 
-export type SourceKind = 'github' | 'gitlab' | 'linear' | 'jira' | 'ical' | 'imap' | 'feed' | 'server'
+export type SourceKind = 'github' | 'gitlab' | 'linear' | 'jira' | 'ical' | 'imap' | 'feed' | 'server' | 'telegram'
 
 export interface Source {
   id: string

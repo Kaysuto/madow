@@ -22,7 +22,7 @@ Aperçu : Madow s'utilise au quotidien mais reste jeune, et des choses bougeront
 - **Lanceur** : Ctrl+K, ou Alt+Espace depuis n'importe où sur l'ordinateur, retrouve un élément, change d'espace, ouvre un projet dans votre éditeur, note une tâche ou une idée, ou interroge l'assistant. Le raccourci global se change dans les réglages.
 - **Barre d'état** : processeur, mémoire et disque, la musique en cours avec ses boutons (Windows et Linux), les agents au travail, et les serveurs qui ne répondent plus.
 
-Sources pour l'instant : toute boîte mail (IMAP/SMTP), les agendas par lien iCal, GitHub et GitLab, Linear et Jira, les flux RSS et Atom, et des serveurs à surveiller. Modèles : Claude Code ou Codex avec votre abonnement, une clé API (Anthropic ou tout service compatible OpenAI), ou un modèle local. Des données d'exemple sont intégrées, pour faire le tour avant de connecter quoi que ce soit.
+Sources pour l'instant : toute boîte mail (IMAP/SMTP), les agendas par lien iCal, GitHub et GitLab, Linear et Jira, les groupes et canaux Telegram par un robot, les flux RSS et Atom, et des serveurs à surveiller. Modèles : Claude Code ou Codex avec votre abonnement, une clé API (Anthropic ou tout service compatible OpenAI), ou un modèle local. Des données d'exemple sont intégrées, pour faire le tour avant de connecter quoi que ce soit.
 
 Vos données restent sur votre machine. Le modèle n'a jamais d'outil dessus : Madow lit vos sources elle-même et lui donne du texte, et rien n'est envoyé ni créé sans votre clic.
 
