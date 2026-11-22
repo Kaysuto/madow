@@ -1,6 +1,18 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { type Item, type Rule, RULE_KINDS, deleteRule, listItems, listRules, onItemsChanged, saveRule } from '../lib/api'
+  import {
+    type Item,
+    type Rule,
+    type Suggestion,
+    RULE_KINDS,
+    deleteRule,
+    ignoreSuggestion,
+    listItems,
+    listRules,
+    listSuggestions,
+    onItemsChanged,
+    saveRule,
+  } from '../lib/api'
   import { i18n } from '../lib/i18n.svelte'
   import { relativeTime } from '../lib/time'
 
@@ -21,11 +33,13 @@
   })
 
   let rules = $state<Rule[]>([])
+  let suggestions = $state<Suggestion[]>([])
   let draft = $state<Rule>(blank())
   let editing = $state(false) // the draft is a rule that exists, not a new one
   let matching = $state<Item[] | null>(null) // null until the draft is about something
   let error = $state('')
   let armed = $state('') // id of the rule whose removal waits for a second click
+  let form = $state<HTMLFormElement>()
   const now = Date.now() / 1000
 
   async function guard(action: () => Promise<void>) {
@@ -37,11 +51,24 @@
     }
   }
 
-  const load = () => guard(async () => void (rules = await listRules()))
+  const load = () => guard(async () => void ([rules, suggestions] = await Promise.all([listRules(), listSuggestions()])))
+
+  /** Fills the form with the rule a habit suggests. Nothing is saved: the user reads it first. */
+  function propose(habit: Suggestion) {
+    draft = { ...blank(), name: habit.author, kind: habit.kind, search: habit.author, notify: false, triage: habit.triage }
+    editing = false
+    form?.scrollIntoView({ block: 'nearest' })
+  }
+
+  const ignore = (habit: Suggestion) =>
+    guard(async () => {
+      await ignoreSuggestion($state.snapshot(habit))
+      await load()
+    })
 
   onMount(() => {
     void load()
-    // A sync may have run the rules: their counts are read again.
+    // A sync may have run the rules, a gesture may have made a habit: both are read again.
     const listening = onItemsChanged(load)
     return () => void listening.then(stop => stop())
   })
@@ -121,6 +148,24 @@
 <h1>{i18n.t.spaces.automations}</h1>
 <p class="hint">{i18n.t.rules.intro}</p>
 
+{#if suggestions.length > 0}
+  <h2>{i18n.t.rules.suggested}</h2>
+  <ul class="rules">
+    {#each suggestions as habit (`${habit.kind} ${habit.triage} ${habit.author}`)}
+      <li>
+        <div class="what">
+          <span class="name">{habit.author}</span>
+          <span class="hint">{i18n.t.rules.habit[habit.triage].replace('{n}', String(habit.count))}</span>
+          <span class="hint">{i18n.t.kinds[habit.kind]} → {i18n.t.rules.triage[habit.triage]}</span>
+        </div>
+        <button class="btn" onclick={() => propose(habit)}>{i18n.t.rules.propose}</button>
+        <button class="btn" onclick={() => ignore(habit)}>{i18n.t.rules.ignore}</button>
+      </li>
+    {/each}
+  </ul>
+  <h2>{i18n.t.rules.yours}</h2>
+{/if}
+
 {#if rules.length === 0}
   <p class="hint">{i18n.t.rules.none}</p>
 {/if}
@@ -153,6 +198,7 @@
 </ul>
 
 <form
+  bind:this={form}
   onsubmit={event => {
     event.preventDefault()
     void save()
@@ -218,6 +264,14 @@
     margin: 0 0 8px;
     font-size: 24px;
     font-weight: 600;
+  }
+  h2 {
+    margin: 24px 0 4px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
   p,
   ul,

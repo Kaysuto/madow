@@ -322,6 +322,24 @@ export const listRules = () => invoke<Rule[]>('list_rules')
 export const saveRule = (rule: Rule) => invoke<void>('save_rule', { rule })
 export const deleteRule = (id: string) => invoke<void>('delete_rule', { id })
 
+/**
+ * A rule the user's own gestures suggest (mirrors `src-tauri/src/usage.rs`): the last `count`
+ * items of this author all got the same gesture.
+ */
+export interface Suggestion {
+  kind: Kind
+  author: string
+  triage: 'done' | 'later'
+  count: number
+}
+
+/** Empty when the journal of gestures is off (the `usage.off` setting). */
+export const listSuggestions = () => invoke<Suggestion[]>('list_suggestions')
+/** Never proposes this again. */
+export const ignoreSuggestion = (suggestion: Suggestion) => invoke<void>('ignore_suggestion', { suggestion })
+/** Turns the journal of gestures on or off. Turning it off erases it. */
+export const setUsageJournal = (enabled: boolean) => invoke<void>('set_usage_journal', { enabled })
+
 // ---------- models (types mirror `src-tauri/src/llm/mod.rs`) ----------
 
 export type ProviderKind = 'anthropic' | 'openai_compat' | 'claude_code' | 'codex'
