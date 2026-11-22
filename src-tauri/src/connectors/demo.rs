@@ -33,6 +33,16 @@ impl Connector for Demo {
                 None,
             ),
             (
+                "message-1",
+                Kind::Message,
+                "Can someone review the changelog before tonight?",
+                "",
+                "Sam Lee · Release crew",
+                "",
+                -35 * MINUTE,
+                None,
+            ),
+            (
                 "mail-1",
                 Kind::Mail,
                 "Invoice #2041 for November",
