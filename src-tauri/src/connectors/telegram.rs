@@ -2,7 +2,7 @@
 //! channels the bot was added to, and those written to the bot itself. Telegram gives no
 //! other program a way to read a person's private chats. Read-only.
 
-use super::{Connector, REQUEST_LIMIT, excerpt, unreachable};
+use super::{Connector, REQUEST_LIMIT, headline, unreachable};
 use crate::{
     http::client,
     items::{Kind, NewItem},
@@ -86,7 +86,7 @@ fn messages(updates: &Value) -> Vec<NewItem> {
                 .trim();
             let chat = &message["chat"];
             let (chat_id, id) = (chat["id"].as_i64()?, message["message_id"].as_i64()?);
-            let title = excerpt(text.lines().next().unwrap_or_default(), 120);
+            let (title, body) = headline(text);
             let place = chat["title"].as_str();
             let author = match (name(&message["from"]), place) {
                 (Some(person), Some(place)) => Some(format!("{person} · {place}")),
@@ -95,12 +95,8 @@ fn messages(updates: &Value) -> Vec<NewItem> {
             Some(NewItem {
                 external_id: format!("{chat_id}:{id}"),
                 kind: Kind::Message,
-                body: if text == title {
-                    String::new()
-                } else {
-                    excerpt(text, 500)
-                },
                 title,
+                body,
                 author,
                 url: page(chat, chat_id, id),
                 state: String::new(),

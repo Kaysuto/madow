@@ -286,7 +286,7 @@ export const en = {
     confirmRemove: 'Confirm removal',
     service: 'Service',
     name: 'Name',
-    token: { github: 'Token (optional)', gitlab: 'Access token', linear: 'API key', jira: 'API token', ical: 'Secret iCal address', imap: 'Password or app password', feed: 'Feed address (https://…)', server: '', telegram: 'Bot token' },
+    token: { github: 'Token (optional)', gitlab: 'Access token', linear: 'API key', jira: 'API token', ical: 'Secret iCal address', imap: 'Password or app password', feed: 'Feed address (https://…)', server: '', telegram: 'Bot token', discord: 'Bot token' },
     server: 'Mail server (IMAP)',
     serverKind: 'Server to watch',
     instance: {
@@ -301,6 +301,8 @@ export const en = {
     add: 'Add',
     sync: 'Sync now',
     hints: {
+      discord:
+        'Discord forbids reading your private messages with another program: Madow reads through a bot. Create an application with a bot in the Discord developer portal, turn on its "Message Content Intent", invite it to your servers and paste its token here. Madow reads the channels the bot can see: the 20 that spoke last in the past 24 hours, 20 messages each. Reading only.',
       telegram:
         'Telegram lets no program read your private chats: Madow reads through a bot. Create one with @BotFather, paste its token here, and add the bot to the groups and channels you want to follow. To see every message of a group and not only those addressed to the bot, turn off its privacy mode in BotFather. Madow shows the messages of the last 24 hours, 100 at most. Use a bot made for Madow: another program reading the same bot would miss messages.',
       server: 'Madow checks every few minutes that the port accepts connections, or that the web address answers. A server that stops answering becomes an alert in the inbox and in the status bar, until it is back.',

@@ -2,6 +2,7 @@
 //! The rest of the app only ever sees items, so it never depends on a particular service.
 
 mod demo;
+mod discord;
 mod feed;
 mod github;
 mod gitlab;
@@ -93,6 +94,8 @@ pub enum SourceKind {
     Server,
     /// A messaging service, read through a bot of the user's own. Its token is the bot's.
     Telegram,
+    /// Another messaging service, read the same way.
+    Discord,
 }
 
 /// A source the user has connected. Its token, if any, is in the keychain.
@@ -159,6 +162,7 @@ pub fn configured(conn: &Connection) -> Result<Vec<Box<dyn Connector>>> {
             SourceKind::Ical => Box::new(ical::Ical::new(source.id, token)),
             SourceKind::Feed => Box::new(feed::Feed::new(source.id, token)),
             SourceKind::Telegram => Box::new(telegram::Telegram::new(source.id, token)),
+            SourceKind::Discord => Box::new(discord::Discord::new(source.id, token)),
             SourceKind::Server => {
                 let options = serde_json::from_value(source.options).unwrap_or_default();
                 Box::new(server::Server::new(source.id, source.name, options))
@@ -195,6 +199,19 @@ fn parse_day(text: &str) -> Option<i64> {
 /// At most `limit` characters, cut on a character boundary.
 fn excerpt(text: &str, limit: usize) -> String {
     text.trim().chars().take(limit).collect()
+}
+
+/// A chat message as an item shows it: its first line as the title, and the start of the whole
+/// text as the body when there is more to read.
+fn headline(text: &str) -> (String, String) {
+    let text = text.trim();
+    let title = excerpt(text.lines().next().unwrap_or_default(), 120);
+    let body = if text == title {
+        String::new()
+    } else {
+        excerpt(text, 500)
+    };
+    (title, body)
 }
 
 /// The address is left out of the message: for some sources it holds the secret.
